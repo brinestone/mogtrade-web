@@ -9,9 +9,12 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideClientHydration(withHttpTransferCacheOptions({
-      includePostRequests: false,
-    })),
-    provideHttpClient()
+    provideClientHydration(
+      withHttpTransferCacheOptions({
+        includePostRequests: false,
+        includeHeaders: ['ETag', 'Last-Modified', 'Cache-Control', 'Content-Type'],
+      }),
+    ),
+    provideHttpClient(),
   ],
 };
