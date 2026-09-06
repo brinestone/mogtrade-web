@@ -1,9 +1,13 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration, withHttpTransferCacheOptions } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { routes } from './app.routes';
+import { initializeFingerprint } from './adapters/fingerprint';
+import { DeviceStore } from './store/device/store';
+import { apiDeviceIdInterceptor } from './interceptors/api-device-id-interceptor';
+import { apiBearerTokenInterceptor } from './interceptors/api-bearer-token-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +19,8 @@ export const appConfig: ApplicationConfig = {
         includeHeaders: ['ETag', 'Last-Modified', 'Cache-Control', 'Content-Type'],
       }),
     ),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([apiDeviceIdInterceptor, apiBearerTokenInterceptor])),
+    initializeFingerprint(),
+    DeviceStore
   ],
 };
