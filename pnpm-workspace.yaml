@@ -3,3 +3,9 @@ allowBuilds:
   esbuild: true
   lmdb: true
   msgpackr-extract: true
+  nx: set this to true or false
+supportedArchitectures:
+  os:
+    - current
+  cpu:
+    - current
