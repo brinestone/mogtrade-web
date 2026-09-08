@@ -9,9 +9,13 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "strict": true,
     "target": "ES2022",
     "module": "preserve",
     "paths": {
+      "@mogtrade/sdk/*": ["./libs/sdk/mogtrade/api/*"],
+      "@mogtrade/sdk/models": ["./libs/sdk/mogtrade/schemas/index.ts"],
+      "@mogtrade/app/*": ["./src/app/*"],
       "@spartan-ng/helm/sonner": ["./libs/ui/sonner/src/index.ts"],
       "@spartan-ng/helm/utils": ["./libs/ui/utils/src/index.ts"]
     }

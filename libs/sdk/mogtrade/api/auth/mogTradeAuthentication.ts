@@ -22,17 +22,27 @@ import type {
   Observable
 } from 'rxjs';
 
-import type {
-  CredentialSignInRequestContent,
+import {
   CredentialSignInResponseContent,
-  CredentialSignUpRequestContent,
   RotateAccessTokenResponseContent
 } from '../../schemas';
-
 import type {
-  HttpHeaders,
+  CredentialSignInRequestContent,
+  CredentialSignInResponseContentOutput,
+  CredentialSignUpRequestContent,
+  RotateAccessTokenResponseContentOutput
+} from '../../schemas';
+
+import {
   HttpResponse as AngularHttpResponse
 } from '@angular/common/http';
+import type {
+  HttpHeaders
+} from '@angular/common/http';
+
+import {
+  map
+} from 'rxjs';
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
@@ -83,72 +93,72 @@ export class MogTradeAuthenticationService {
 /**
  * This endpoint allows legitimate users to obtain a bearer JWT token and a corresponding refresh token
  */
- credentialSignIn<TData = CredentialSignInResponseContent>(credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientBodyOptions): Observable<TData>;
- credentialSignIn<TData = CredentialSignInResponseContent>(credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- credentialSignIn<TData = CredentialSignInResponseContent>(credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
-  credentialSignIn<TData = CredentialSignInResponseContent>(
-    credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+ credentialSignIn(credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientBodyOptions): Observable<CredentialSignInResponseContentOutput>;
+ credentialSignIn(credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientEventOptions): Observable<HttpEvent<CredentialSignInResponseContentOutput>>;
+ credentialSignIn(credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<CredentialSignInResponseContentOutput>>;
+  credentialSignIn(
+    credentialSignInRequestContent: CredentialSignInRequestContent, options?: HttpClientObserveOptions): Observable<CredentialSignInResponseContentOutput | HttpEvent<CredentialSignInResponseContentOutput> | AngularHttpResponse<CredentialSignInResponseContentOutput>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(
+      return this.http.post<CredentialSignInResponseContentOutput>(
       `/api/v1/auth/login/credential`,
       credentialSignInRequestContent,{
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
       }
-    );
+    ).pipe(map(event => event instanceof AngularHttpResponse ? event.clone({ body: CredentialSignInResponseContent.parse(event.body) }) : event));
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(
+      return this.http.post<CredentialSignInResponseContentOutput>(
       `/api/v1/auth/login/credential`,
       credentialSignInRequestContent,{
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
       }
-    );
+    ).pipe(map(response => response.clone({ body: CredentialSignInResponseContent.parse(response.body) })));
     }
 
-    return this.http.post<TData>(
+    return this.http.post<CredentialSignInResponseContentOutput>(
       `/api/v1/auth/login/credential`,
       credentialSignInRequestContent,{
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
       }
-    );
+    ).pipe(map(data => CredentialSignInResponseContent.parse(data)));
   }
 
 /**
  * Rotate access token
  */
- rotateAccessToken<TData = RotateAccessTokenResponseContent>( options?: HttpClientBodyOptions): Observable<TData>;
- rotateAccessToken<TData = RotateAccessTokenResponseContent>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- rotateAccessToken<TData = RotateAccessTokenResponseContent>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
-  rotateAccessToken<TData = RotateAccessTokenResponseContent>(
-     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+ rotateAccessToken( options?: HttpClientBodyOptions): Observable<RotateAccessTokenResponseContentOutput>;
+ rotateAccessToken( options?: HttpClientEventOptions): Observable<HttpEvent<RotateAccessTokenResponseContentOutput>>;
+ rotateAccessToken( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<RotateAccessTokenResponseContentOutput>>;
+  rotateAccessToken(
+     options?: HttpClientObserveOptions): Observable<RotateAccessTokenResponseContentOutput | HttpEvent<RotateAccessTokenResponseContentOutput> | AngularHttpResponse<RotateAccessTokenResponseContentOutput>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
+      return this.http.get<RotateAccessTokenResponseContentOutput>(
       `/api/v1/auth/refresh`,{
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
       }
-    );
+    ).pipe(map(event => event instanceof AngularHttpResponse ? event.clone({ body: RotateAccessTokenResponseContent.parse(event.body) }) : event));
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
+      return this.http.get<RotateAccessTokenResponseContentOutput>(
       `/api/v1/auth/refresh`,{
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
       }
-    );
+    ).pipe(map(response => response.clone({ body: RotateAccessTokenResponseContent.parse(response.body) })));
     }
 
-    return this.http.get<TData>(
+    return this.http.get<RotateAccessTokenResponseContentOutput>(
       `/api/v1/auth/refresh`,{
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
       }
-    );
+    ).pipe(map(data => RotateAccessTokenResponseContent.parse(data)));
   }
 
 /**
