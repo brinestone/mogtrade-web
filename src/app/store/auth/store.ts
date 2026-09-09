@@ -1,23 +1,15 @@
-import { inject } from '@angular/core';
-import { MogTradeAuthenticationService } from '@mogtrade/sdk/auth/mogTradeAuthentication';
-import {
-  patchState,
-  signalStore,
-  withHooks,
-  withMethods,
-  withProps,
-  withState,
-} from '@ngrx/signals';
-import { on, withReducer } from '@ngrx/signals/events';
+import { Provider } from '@angular/core';
+import { AuthService } from '@mogtrade/sdk/auth';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { produce } from 'immer';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { Principal } from '../../../models/principal';
-import { isOnBrowser } from '../../utils';
-import { authEvents } from './events';
+import { isJwtValid, isOnBrowser } from '../../utils';
 
 export interface AuthStoreState {
   principal: Principal | null;
   accessToken: string | null;
+  refreshToken: string | null;
   signedIn: boolean;
   signingIn: boolean;
 }
@@ -26,28 +18,40 @@ const defaultState: AuthStoreState = {
   principal: null,
   signedIn: false,
   accessToken: null,
+  refreshToken: null,
   signingIn: false,
 };
 
 export const AuthStore = signalStore(
   withState(defaultState),
-  withProps((store) => ({
-    _authService: inject(MogTradeAuthenticationService),
-  })),
-  withReducer(
-    on(authEvents.credentialSignIn, () => ({ signingIn: true })),
-    on(authEvents.signInComplete, () => ({ signingIn: false })),
-  ),
   withMethods((store) => ({
-    storeAccessToken: (token: string) => {
-      localStorage.setItem('act', token);
+    reset() {
+      patchState(store, defaultState);
+      localStorage.removeItem('rt');
+      localStorage.removeItem('act');
     },
-    setAccessToken: (token: string) => {
+    updatePrincipal: (token: string) => {
       const principal = parsePrincipal(token);
       patchState(store, (state) =>
         produce(state, (draft) => {
-          draft.signedIn = isTokenValid(token);
+          draft.signedIn = isJwtValid(token);
           draft.principal = principal;
+          draft.accessToken = token;
+        }),
+      );
+    },
+    storeRefreshToken: (token: string) => {
+      localStorage.setItem('rt', token);
+      patchState(store, (u) =>
+        produce(u, (draft) => {
+          draft.refreshToken = token;
+        }),
+      );
+    },
+    storeAccessToken: (token: string) => {
+      localStorage.setItem('act', token);
+      patchState(store, (u) =>
+        produce(u, (draft) => {
           draft.accessToken = token;
         }),
       );
@@ -58,20 +62,12 @@ export const AuthStore = signalStore(
       if (!isOnBrowser()) return;
       const storedToken = localStorage.getItem('act');
       if (storedToken) {
-        store.setAccessToken(storedToken);
+        store.updatePrincipal(storedToken);
+        patchState(store, () => ({ accessToken: storedToken }));
       }
     },
   }),
 );
-
-function isTokenValid(token: string) {
-  const payload = jwtDecode(token);
-  if (!payload.exp) {
-    return false;
-  }
-  const now = Date.now() / 1000;
-  return payload.exp > now;
-}
 
 function parsePrincipal(token: string) {
   const payload = jwtDecode<
@@ -79,7 +75,6 @@ function parsePrincipal(token: string) {
       custom_fields: Record<string, boolean | null | string | number>;
     } & JwtPayload
   >(token);
-
   const principal = Principal.parse({
     displayName: payload.custom_fields['display_name'],
     email: payload.custom_fields['email'],
@@ -88,4 +83,8 @@ function parsePrincipal(token: string) {
     id: payload.sub,
   });
   return principal;
+}
+
+export function provideAuthStore() {
+  return [{ provide: AuthService }, { provide: AuthStore, multi: false }] as Provider[];
 }

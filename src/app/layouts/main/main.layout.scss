@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+:host {
+  @apply grid h-full grid-cols-[40px_1fr];
+}

@@ -7,7 +7,7 @@
 import * as zod from 'zod';
 
 export const CredentialSignInHeaders = zod.object({
-  "X-Device-Id": zod.string().describe('The client device\'s ID')
+  "X-d-id": zod.string().describe('The client device\'s ID')
 })
 
 export type CredentialSignInHeaders = zod.input<typeof CredentialSignInHeaders>;

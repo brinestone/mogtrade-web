@@ -8,7 +8,7 @@ export const apiDeviceIdInterceptor: HttpInterceptorFn = (req, next) => {
     return next(
       req.clone({
         setHeaders: {
-          'x-device-id': store.fingerprint(),
+          'x-d-id': store.fingerprint(),
         },
       }),
     );

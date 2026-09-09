@@ -7,8 +7,8 @@
 import * as zod from 'zod';
 
 export const RotateAccessTokenHeaders = zod.object({
-  "X-Device-Id": zod.string(),
-  "X-Refresh-Token": zod.string()
+  "X-Refresh-Token": zod.string(),
+  "X-d-Id": zod.string()
 })
 
 export type RotateAccessTokenHeaders = zod.input<typeof RotateAccessTokenHeaders>;

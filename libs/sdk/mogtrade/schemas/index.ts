@@ -5,6 +5,8 @@
  * OpenAPI spec version: 2026-02-09
  */
 
+export * from './checkEmailAvailableParams.zod';
+export * from './checkEmailAvailableResponseContent.zod';
 export * from './conflictErrorResponseContent.zod';
 export * from './credentialSignInBody.zod';
 export * from './credentialSignInHeaders.zod';

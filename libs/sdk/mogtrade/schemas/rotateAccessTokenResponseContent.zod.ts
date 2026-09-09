@@ -8,7 +8,7 @@ import * as zod from 'zod';
 
 export const RotateAccessTokenResponseContent = zod.object({
   "accessToken": zod.string().describe('The access token (JWT) granted to the user'),
-  "refreshToken": zod.string().describe('The refresh token for the client to obtain a new access token on expiration')
+  "refreshToken": zod.string().describe('The refresh token')
 })
 
 export type RotateAccessTokenResponseContent = zod.input<typeof RotateAccessTokenResponseContent>;
