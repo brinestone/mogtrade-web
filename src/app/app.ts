@@ -3,7 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HlmToasterImports } from '@spartan-ng/helm/sonner';
 
 @Component({
-  selector: 'app-root',
+  selector: 'tm-root',
   imports: [RouterOutlet, HlmToasterImports],
   templateUrl: './app.html',
   styleUrl: './app.scss',

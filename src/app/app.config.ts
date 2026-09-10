@@ -8,6 +8,7 @@ import { initializeFingerprint } from './adapters/fingerprint';
 import { DeviceStore } from './store/device/store';
 import { apiDeviceIdInterceptor } from './interceptors/api-device-id-interceptor';
 import { apiBearerTokenInterceptor } from './interceptors/api-bearer-token-interceptor';
+import { AuthStore, provideAuthStore } from './store/auth/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,6 +22,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(withInterceptors([apiDeviceIdInterceptor, apiBearerTokenInterceptor])),
     initializeFingerprint(),
-    DeviceStore
+    DeviceStore,
+    provideAuthStore()
   ],
 };

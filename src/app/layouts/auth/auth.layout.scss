@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+:host {
+  @apply h-full lg:grid lg:grid-cols-[1fr_40%];
+}

@@ -9,9 +9,9 @@ export function initializeFingerprint() {
     if (isPlatformServer(platformId)) {
       return;
     }
+    const store = inject(DeviceStore);
     const fp = await fpjs.load();
     const result = await fp.get();
-    const store = inject(DeviceStore);
     store.setFingerprint(result.visitorId);
   });
 }

@@ -1,0 +1,54 @@
+<div hlmCardHeader>
+  <h3 hlmCardTitle>Sign into Your Account</h3>
+</div>
+<div hlmCardContent>
+  @if (form().errors().length > 0) {
+    <div hlmAlert class="my-3" variant="destructive">
+      <ng-icon name="lucideAlertCircle" />
+      <h4 hlmAlertTitle>Sign in Failed</h4>
+      @for (err of form().errors(); track $index) {
+        <p hlmAlertDescription>{{ err.message }}</p>
+      }
+    </div>
+  }
+  <form id="login-form" [formRoot]="form">
+    <div hlmFieldGroup class="space-y-2">
+      <div hlmField>
+        <label hlmFieldLabel for="email">Email</label>
+        <input hlmInput type="email" id="email" [formField]="form.email" />
+        @for (err of form.email().errors(); track $index) {
+          <hlm-field-error>{{ err.message }}</hlm-field-error>
+        }
+      </div>
+      @if (flowStep() == 1) {
+        <div hlmField animate.enter="fade-in">
+          <label hlmFieldLabel for="password">Password</label>
+          <tm-password id="password" [formField]="form.password" />
+          @for (err of form.password().errors(); track $index) {
+            <hlm-field-error>{{ err.message }}</hlm-field-error>
+          }
+        </div>
+      }
+    </div>
+  </form>
+</div>
+<div hlmCardFooter class="flex-col gap-2">
+  <button
+    [disabled]="
+      ((form.email().invalid() || form.password().invalid()) && flowStep() != 0) ||
+      form().submitting()
+    "
+    hlmBtn
+    type="submit"
+    form="login-form"
+    class="w-full"
+  >
+    @if (form().submitting()) {
+      <hlm-spinner icon="lucideLoader" />
+    } @else {
+      <span>
+        {{ flowStep() == 0 ? 'Continue' : 'Sign in' }}
+      </span>
+    }
+  </button>
+</div>

@@ -1,0 +1,22 @@
+@reference "tailwindcss";
+
+:host {
+  @apply max-w-sm lg:max-w-md w-full shadow-md;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.fade-in {
+  animation: .3s linear fade forwards;
+}
+
+.fade-out {
+  animation: .3s linear fade reverse;
+}

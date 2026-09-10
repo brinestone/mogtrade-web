@@ -92,3 +92,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+html,
+body {
+  @apply h-full;
+}
