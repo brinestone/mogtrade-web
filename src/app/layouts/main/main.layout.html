@@ -1,15 +1,40 @@
-<div hlmSidebarWrapper>
-  <hlm-sidebar>
-    <div hlmSidebarHeader></div>
+<div hlmSidebarWrapper class="relative overflow-hidden!">
+  <hlm-sidebar class="relative">
+    <div hlmSidebarHeader>
+      <ul hlmSidebarMenu>
+        <li hlmSidebarMenuItem>
+          <a routerLink="/" class="flex gap-2 no-underline items-center">
+            <img class="max-w-10" alt="logo brand" src="/favicon.ico" />
+            <h1 class="">MogTrade</h1>
+          </a>
+        </li>
+      </ul>
+    </div>
     <div hlmSidebarContent>
-      <div hlmSidebarGroup></div>
+      <div hlmSidebarGroup>
+        <div hlmSidebarGroupContent>
+          <ul hlmSidebarMenu>
+            @for (item of menuItems; track $index) {
+              <li hlmSidebarMenuItem>
+                <a hlmSidebarMenuButton [routerLink]="item.path">
+                  <ng-icon [name]="item.icon" />
+                  <span>{{ item.label }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
     </div>
     <div hlmSidebarFooter>
       <ul hlmSidebarMenu>
         <li hlmSidebarMenuItem>
           <button hlmSidebarMenuButton [hlmDropdownMenuTrigger]="settingsMenu">
             <div class="flex gap-x-2 items-center">
-              <!-- Insert avatar here -->
+              <hlm-avatar>
+                <img hlmAvatarImage [src]="principal()?.photo" alt="avatar" />
+                <span hlmAvatarFallback></span>
+              </hlm-avatar>
               <div class="space-y-0.5">
                 <p class="text-sm line-clamp-1 font-semibold">
                   {{ principal()?.displayName ?? 'User' }}
@@ -27,7 +52,7 @@
                 <ng-icon name="lucideSettings" /><span>Settings</span>
               </button>
               <hlm-dropdown-menu-separator />
-              <button variant="destructive" hlmDropdownMenuItem (click)="logout()">
+              <button variant="destructive" hlmDropdownMenuItem (click)="signOut()">
                 <ng-icon name="lucideLogOut" /><span>Logout</span>
               </button>
             </hlm-dropdown-menu>
@@ -35,11 +60,26 @@
         </li>
       </ul>
     </div>
+    <div
+      [ngClass]="{
+        '-translate-x-1/2': sidebarService.state() == 'expanded',
+        'translate-x-[-30%]': sidebarService.state() == 'collapsed',
+      }"
+      class="absolute left-full transition-[translate] bg-card rounded-full border-border border-card inline-block top-[90%] shadow-lg z-100"
+    >
+      <button hlmSidebarTrigger size="icon-lg" class="text-card-foreground rounded-full">
+        test
+      </button>
+    </div>
   </hlm-sidebar>
-  <main hlmSidebarInset>
-    <header class="flex h-8 border-b border-muted items-center justify-between px-4">
+  <main hlmSidebarInset class="grid grid-rows-[auto_1fr_auto] overflow-hidden">
+    <!-- <header class="flex h-8 border-b border-muted items-center justify-between px-4">
       <button hlmSidebarTrigger><span class="sr-only"></span></button>
-    </header>
-    <router-outlet />
+      header
+    </header> -->
+    <div class="overflow-auto max-h-full">
+      <router-outlet />
+    </div>
+    <!-- <footer class="h-8">bottom stuff</footer> -->
   </main>
 </div>

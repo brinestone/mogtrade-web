@@ -1,5 +1,5 @@
 @reference "tailwindcss";
 
 :host {
-  @apply h-full block;
+  @apply h-full block overflow-hidden;
 }

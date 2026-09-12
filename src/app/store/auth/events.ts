@@ -6,5 +6,6 @@ export const authEvents = eventGroup({
   events: {
     credentialSignIn: type<CredentialSignInBody>(),
     signedIn: type<void>(),
+    signOut: type<void>(),
   },
 });

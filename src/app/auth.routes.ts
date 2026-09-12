@@ -15,4 +15,5 @@ export const authRoutes: Routes = [
     title: 'Create your Account today',
     loadComponent: () => import('./pages/auth/signup/signup.page').then((m) => m.SignupPage),
   },
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
 ];

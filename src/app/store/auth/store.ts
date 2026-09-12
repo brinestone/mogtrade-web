@@ -1,10 +1,14 @@
-import { Provider } from '@angular/core';
+import { inject, Provider } from '@angular/core';
 import { AuthService } from '@mogtrade/sdk/auth';
 import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { produce } from 'immer';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { Principal } from '../../../models/principal';
 import { isJwtValid, isOnBrowser } from '../../utils';
+import { Events, withEventHandlers } from '@ngrx/signals/events';
+import { authEvents } from './events';
+import { tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface AuthStoreState {
   principal: Principal | null;
@@ -56,6 +60,14 @@ export const AuthStore = signalStore(
         }),
       );
     },
+  })),
+  withEventHandlers((store, events = inject(Events), router = inject(Router)) => ({
+    signOut: events.on(authEvents.signOut).pipe(
+      tap(() => {
+        store.reset();
+        router.navigate(['/auth'], { onSameUrlNavigation: 'reload' });
+      }),
+    ),
   })),
   withHooks({
     onInit(store) {
