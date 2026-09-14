@@ -1,0 +1,19 @@
+name: review
+description: Review a target with structured findings
+trigger: when the user asks for a read-only-code review
+display: report
+params:
+  - { name: target, required: true }
+  - { name: focus, default: "Apply normal risk-based lens selection" }
+task: |-
+  Review {params.target}.
+  Focus: {params.focus}
+json:
+  type: object
+  required: [outcome, report]
+  properties:
+    outcome: { enum: [approved, changes_required, cannot_proceed] }
+    report: { type: string, minLength: 1 }
+  additionalProperties: false
+thinking: high
+tools: [read, bash]

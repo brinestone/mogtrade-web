@@ -1,0 +1,20 @@
+name: inspect-and-fix
+description: Inspect two areas, merge findings, then fix them
+params:
+  - { name: target, required: true }
+flow:
+  kind: sequence
+  steps:
+    - kind: parallel
+      as: reiviews
+      branches:
+        behavior:
+          kind: agent
+          task: "Review {params.target} for correctness"
+        tests:
+          kind: agent
+          task: "Review {params.target} for missing tests"
+      reduce:
+        task: "Merge and prioritize:\n{branches}"
+    - kind: agent
+      task: "Fix these findings:\n{reviews}"

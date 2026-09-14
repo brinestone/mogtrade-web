@@ -16,7 +16,14 @@
           <ul hlmSidebarMenu>
             @for (item of menuItems; track $index) {
               <li hlmSidebarMenuItem>
-                <a hlmSidebarMenuButton [routerLink]="item.path">
+                <a
+                  hlmSidebarMenuButton
+                  [routerLink]="item.path"
+                  [routerLinkActiveOptions]="{exact: false}"
+                  [isActive]="rla.isActive"
+                  routerLinkActive="active"
+                  #rla="routerLinkActive"
+                >
                   <ng-icon [name]="item.icon" />
                   <span>{{ item.label }}</span>
                 </a>
