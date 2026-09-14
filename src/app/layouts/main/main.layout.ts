@@ -65,7 +65,7 @@ export class MainLayout {
   protected readonly principal = inject(AuthStore).principal;
   protected readonly menuItems = [
     { label: 'Markets', icon: 'lucideChartLine', path: '/console/markets' },
-    { label: 'Trade', path: '/trade', icon: 'lucideCandlestickChart' },
+    { label: 'Trade', path: '/console/markets/trade', icon: 'lucideCandlestickChart' },
   ];
   protected readonly footerItems = [
     { label: 'Settings', icon: 'lucideSettings', route: 'settings' },
