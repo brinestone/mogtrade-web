@@ -11,6 +11,7 @@ export const routes: Routes = [
   {
     path: 'console',
     canActivate: [requireSignedIn],
+    canActivateChild: [requireSignedIn],
     loadComponent: () => import('./layouts/main/main.layout').then((m) => m.MainLayout),
     loadChildren: () => import('./main.routes').then((m) => m.mainRoutes),
   },

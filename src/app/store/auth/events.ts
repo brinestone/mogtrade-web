@@ -1,4 +1,4 @@
-import { CredentialSignInBody } from '@mogtrade/sdk/models';
+import { CredentialSignInBody } from '@mogtrade/sdk/models/auth';
 import { type } from '@ngrx/signals';
 import { eventGroup } from '@ngrx/signals/events';
 export const authEvents = eventGroup({
@@ -6,5 +6,6 @@ export const authEvents = eventGroup({
   events: {
     credentialSignIn: type<CredentialSignInBody>(),
     signedIn: type<void>(),
+    signOut: type<void>(),
   },
 });
