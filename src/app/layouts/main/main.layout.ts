@@ -64,7 +64,7 @@ export class MainLayout {
   protected readonly sidebarService = inject(HlmSidebarService);
   protected readonly principal = inject(AuthStore).principal;
   protected readonly menuItems = [
-    { label: 'Markets', icon: 'lucideChartLine', path: '/console/markets' },
+    { label: 'Markets', icon: 'lucideChartLine', path: '/console/markets/overview' },
     { label: 'Trade', path: '/console/markets/trade', icon: 'lucideCandlestickChart' },
   ];
   protected readonly footerItems = [
