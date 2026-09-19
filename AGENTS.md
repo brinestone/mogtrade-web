@@ -24,6 +24,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ### Components
 
+- We are using tailwindcss with SCSS in this project. In a component's stylesheet file (scss), always begin the file with '@reference "tailwindcss";' so as to reference the existing tailwindcss styles.
 - Keep components small and focused on a single responsibility
 - Use `input()` and `output()` functions instead of decorators
 - Use `computed()` for derived state
@@ -54,3 +55,9 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use the `providedIn: 'root'` option for singleton services
 - Prefer the `@Service` decorator over `@Injectable({providedIn: 'root'})` for new singleton services (Angular v22+)
 - Use the `inject()` function instead of constructor injection
+
+## UI Design
+
+- Always use spartan-ng ui elements like the themeing, colors, etc.
+- Do not use custom colors. Use colors from the spartan-ng themeing system.
+- When generating spartan-ng components, always use the angular cli instead of the nx cli as it is not installed.

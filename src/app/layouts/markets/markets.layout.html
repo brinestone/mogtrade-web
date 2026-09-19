@@ -1,2 +1,18 @@
-<p>markets works!</p>
-<router-outlet />
+<div class="mt-markets">
+  <header class="mt-markets-header border-b">
+    <div class="container">
+      <hlm-tabs tab="markets" class="w-full">
+        <hlm-tabs-list varian="line">
+          <button  hlmTabsTrigger>Markets</button>
+          <button hlmTabsTrigger>Orders</button>
+          <button hlmTabsTrigger>Portfolio</button>
+          <button hlmTabsTrigger>Settings</button>
+        </hlm-tabs-list>
+      </hlm-tabs>
+    </div>
+  </header>
+
+  <main class="container">
+    <router-outlet />
+  </main>
+</div>
